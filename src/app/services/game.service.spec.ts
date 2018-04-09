@@ -25,7 +25,7 @@ describe('GameService', () => {
       service.gameState.started = 1;
       service.generateBins();
       // console.log(service.gameState.bins);
-      expect(service.gameState.bins.length).toBe(4);
+      expect(service.gameState.bins.length).toBe(3);
     }));
 
     it('should addBomb be defined', inject([GameService], (service: GameService) => {
@@ -77,11 +77,11 @@ describe('GameService', () => {
   describe('progress', () => {
     it('should start', inject([GameService], (service: GameService) => {
       service.heartBeat$.next(1);
-      expect(service.gameState.bins.length).toBe(4);
+      expect(service.gameState.bins.length).toBe(3);
       expect(service.gameState.bombs.length).toBe(5);
     }));
 
-    it('should change colors of bins every 40 seconds', inject([GameService], (service: GameService) => {
+    fit('should change colors of bins every 40 seconds', inject([GameService], (service: GameService) => {
       service.heartBeat$.next(1);
       let color = service.gameState.bins[0].color;
       service.heartBeat$.next(39);
@@ -93,6 +93,7 @@ describe('GameService', () => {
         color = service.gameState.bins[0].color;
         service.heartBeat$.next(40);
         expect(color).not.toBe(service.gameState.bins[0].color);
+        expect(color).not.toBeUndefined();
       }
     }));
 

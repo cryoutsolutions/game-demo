@@ -16,7 +16,7 @@ export class GameService {
 
   public heartBeat$: BehaviorSubject<number> = new BehaviorSubject(0);
 
-  public validColors = ['red', 'blue', 'yellow', 'purple', 'green'];
+  public validColors = ['red', 'blue', 'yellow'];
 
   public interval: any;
 
@@ -29,18 +29,22 @@ export class GameService {
         }
         return acc + curr;
       }).subscribe((data) => {
-      this.gameState.started = data > -1 ? data : 0;
-      this.bombsTick();
-      this.binsTick();
+      this.gameState.started = data > -1 ? Math.floor(data) : 0;
+      if ((data % 1) === 0 && data) {
+        this.bombsTick();
+        this.binsTick();
+      }
       if ((data % 40) === 0 && data) {
         console.log('change bins color');
         this.gameState.bins.forEach((bin, key) => {
           this.changeBinsColor(key);
         });
       }
-      if ((data % 3) === 0 && data) {
+      const addNewBombsInterval = Math.floor((this.gameState.bombsLeft / 120) * 5) + 0.5;
+      console.log(addNewBombsInterval);
+      if ((data % addNewBombsInterval) === 0 && data) {
         // console.log('generate new bomb');
-        while (this.gameState.bombsLeft && this.gameState.bombs.length < 5) {
+        while (this.gameState.bombsLeft && this.gameState.bombs.length < 7 ) {
           console.log('add new bomb');
           this.addBomb();
         }
@@ -57,7 +61,7 @@ export class GameService {
         }
       }
 
-      if (this.gameState.bombs.length === 0 && this.gameState.points != 0) {
+      if (this.gameState.bombs.length === 0 && this.gameState.points !== 0 && this.gameState.bombsLeft === 0) {
         this.gameState.started = -1;
       }
     });
@@ -66,7 +70,7 @@ export class GameService {
   generateBins() {
     let exceptColors = [];
     if (this.gameState.started > -1) {
-      while (this.gameState.bins.length < 4) {
+      while (this.gameState.bins.length < 3) {
         exceptColors = [];
         this.gameState.bins.forEach((item, key) => {
           exceptColors.push(item.color);
@@ -85,8 +89,11 @@ export class GameService {
 
   changeBinsColor(index) {
     const exceptColors = [];
+    if (!index) {
+      exceptColors.push(this.gameState.bins[0].color);
+    }
     this.gameState.bins.forEach((item, key) => {
-      if (key <= index) {
+      if (key < index) {
         exceptColors.push(item.color);
       }
     });
@@ -148,8 +155,8 @@ export class GameService {
   run() {
     clearInterval(this.interval);
     this.interval = setInterval(() => {
-      this.heartBeat$.next(1);
-    }, 1000);
+      this.heartBeat$.next(0.5);
+    }, 500);
   }
 
   pause() {
