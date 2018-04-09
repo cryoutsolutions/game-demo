@@ -1,0 +1,5 @@
+Total hours almost 20.
+6 hours on TDD service.
+10 hours on game component.
+2 hours to make it nicer.
+2 hours on fixing to be right on the requirements.
