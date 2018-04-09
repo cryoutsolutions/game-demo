@@ -81,7 +81,7 @@ describe('GameService', () => {
       expect(service.gameState.bombs.length).toBe(5);
     }));
 
-    fit('should change colors of bins every 40 seconds', inject([GameService], (service: GameService) => {
+    it('should change colors of bins every 40 seconds', inject([GameService], (service: GameService) => {
       service.heartBeat$.next(1);
       let color = service.gameState.bins[0].color;
       service.heartBeat$.next(39);
