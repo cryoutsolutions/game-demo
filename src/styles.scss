@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  color: #353333;
+  font-family: "serif", "Andale Mono";
+}
+
+.button{
+  background-color: #bbb;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  font-weight: bold;
+  //border: solid 5px #000;
+
+  border-width: 0 4px 5px 0;
+  border-radius: 5px;
+  border-color: transparent #ddd #999 transparent;
+  background-clip: padding-box;
+}

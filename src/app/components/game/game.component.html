@@ -4,9 +4,9 @@
     {{gameService.gameState.points}}
   </p>
   <p class="right">timer: {{gameService.gameState.started}} bombs left: {{gameService.gameState.bombsLeft}} </p>
-  <button (click)="gameService.run()">Run</button>
-  <button (click)="gameService.pause()">Pause</button>
-  <button (click)="gameService.reset()">Reset</button>
+  <button class="button" (click)="gameService.run()">Run</button>
+  <button class="button" (click)="gameService.pause()">Pause</button>
+  <button class="button" (click)="gameService.reset()">Reset</button>
 
   <div class="bombs">
     <div class="bomb" *ngFor="let bomb of gameService.gameState.bombs; let i = index"
@@ -22,10 +22,6 @@
     >
     </div>
     <p class="timer">Change in: {{gameService.gameState.bins[0]?.timeLeft}}</p>
-  </div>
-  <div class="rules">
-    <p>Match the bombs with the colors.</p>
-    <p>If the bomb color is not in any bin drag it into any bin to diffuse the bomb but you will not get any points.</p>
   </div>
   <div class="finished" *ngIf="gameService.gameState.started === -1">Game finished!</div>
 </div>
