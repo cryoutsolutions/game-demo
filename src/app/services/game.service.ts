@@ -161,7 +161,7 @@ export class GameService {
       bins: [],
       bombs: [],
       speed: 1,
-      bombsLeft: 10,
+      bombsLeft: 120,
       started: 0,
       points: 0
     };
