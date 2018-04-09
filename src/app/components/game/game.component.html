@@ -10,7 +10,7 @@
 
   <div class="bombs">
     <div class="bomb" *ngFor="let bomb of gameService.gameState.bombs; let i = index"
-         [ngStyle]="{'background-color': bomb.color, left: bomb.x +'px', top: bomb.y+ 'px', width: bomb.timeLeft<5?(5-bomb.timeLeft)*5+50+'px':'50px', height: bomb.timeLeft<5?(5-bomb.timeLeft)*5+50+'px':'50px', opacity: bomb.timeLeft<5?(5-bomb.timeLeft)*0.1+0.5:0.5}"
+         [ngStyle]="{'background-color': bomb.color, left: bomb.x +'px', top: bomb.y+ 'px', width: bomb.timeLeft<5?65+'px':'50px', height: bomb.timeLeft<5?65+'px':'50px', opacity: bomb.timeLeft<5?(5-bomb.timeLeft)*0.1+0.5:0.5}"
          dnd-draggable [dragEnabled]="true" [dragData]="[i,bomb.uid]" (onDragEnd)="onDragEnd(i)"
     ><div id="bomb" *ngIf="bomb.timeLeft<3"></div><span class="timer">{{bomb.timeLeft}}</span>
     </div>

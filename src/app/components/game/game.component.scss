@@ -29,6 +29,10 @@
       margin: 10px;
       position: absolute;
       border-radius: 35px;
+      -webkit-transition:width 5000ms ease-in-out, height 5000ms ease-in-out;
+      -moz-transition:width 5000ms ease-in-out, height 5000ms ease-in-out;
+      -o-transition:width 5000ms ease-in-out, height 5000ms ease-in-out;
+      transition:width 5000ms ease-in-out, height 5000ms ease-in-out;
       span {
         background-color: blanchedalmond;
         border-radius: 15px;
