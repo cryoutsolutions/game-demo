@@ -16,16 +16,22 @@ export class GameService {
 
   public heartBeat$: BehaviorSubject<number> = new BehaviorSubject(0);
 
-  public validColors = ['red', 'blue', 'yellow', 'purple', 'orange'];
+  public validColors = ['red', 'blue', 'yellow', 'purple', 'green'];
+
+  public interval: any;
 
   constructor() {
     this.heartBeat$
       .startWith(0)
       .scan((acc, curr) => {
+        if (curr === -1) {
+          return 0;
+        }
         return acc + curr;
       }).subscribe((data) => {
-      this.gameState.started = data;
+      this.gameState.started = data > -1 ? data : 0;
       this.bombsTick();
+      this.binsTick();
       if ((data % 40) === 0 && data) {
         console.log('change bins color');
         this.gameState.bins.forEach((bin, key) => {
@@ -50,12 +56,16 @@ export class GameService {
           this.addBomb();
         }
       }
+
+      if (this.gameState.bombs.length === 0 && this.gameState.points != 0) {
+        this.gameState.started = -1;
+      }
     });
   }
 
   generateBins() {
     let exceptColors = [];
-    if (this.gameState.started) {
+    if (this.gameState.started > -1) {
       while (this.gameState.bins.length < 4) {
         exceptColors = [];
         this.gameState.bins.forEach((item, key) => {
@@ -105,12 +115,58 @@ export class GameService {
     });
   }
 
+  binsTick() {
+    this.gameState.bins.forEach((bin, key) => {
+      bin.timeLeft--;
+      if (!bin.timeLeft) {
+        bin.timeLeft = 40;
+      }
+    });
+  }
+
   bombToBin(bombIndex, binIndex) {
     console.log('bombToBin', this.gameState.started, this.gameState.bombs[bombIndex], this.gameState.bins[binIndex]);
     if (this.gameState.bombs[bombIndex].color === this.gameState.bins[binIndex].color) {
       this.gameState.bombs.splice(bombIndex, 1);
       this.gameState.points++;
+    } else {
+      // if bomb color is not in bins then just delete it without affecting score
+      const colorExistisInBins = this.gameState.bins.find((bin) => {
+        if (bin.color === this.gameState.bombs[bombIndex].color) {
+          return true;
+        }
+      });
+      if (colorExistisInBins) {
+        this.gameState.bombs.splice(bombIndex, 1);
+        this.gameState.points--;
+      } else {
+        this.gameState.bombs.splice(bombIndex, 1);
+      }
     }
+  }
+
+  run() {
+    clearInterval(this.interval);
+    this.interval = setInterval(() => {
+      this.heartBeat$.next(1);
+    }, 1000);
+  }
+
+  pause() {
+    clearInterval(this.interval);
+  }
+
+  reset() {
+    this.gameState = {
+      bins: [],
+      bombs: [],
+      speed: 1,
+      bombsLeft: 10,
+      started: 0,
+      points: 0
+    };
+    this.heartBeat$.next(-1);
+    this.run();
   }
 
 }
@@ -124,6 +180,9 @@ export class Bin {
 
 export class Bomb {
   private timeLeft = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
+  private x = Math.floor(Math.random() * 450);
+  private y = Math.floor(Math.random() * 450);
+  private uid = Math.random();
 
   constructor(private color) {
     this.color = color;

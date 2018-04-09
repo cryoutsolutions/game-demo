@@ -4,14 +4,19 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { GameService } from './services/game.service';
+import { GameComponent } from './components/game/game.component';
+
+import {DndModule} from 'ng2-dnd';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
+    DndModule.forRoot()
   ],
   providers: [GameService],
   bootstrap: [AppComponent]

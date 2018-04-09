@@ -112,7 +112,7 @@ describe('GameService', () => {
     it('should be able to put bombs into bins', inject([GameService], (service: GameService) => {
       service.heartBeat$.next(1);
       let cicles = 550;
-      while (cicles && service.gameState.points < 120) {
+      while (cicles && service.gameState.started > -1) {
         cicles--;
         service.heartBeat$.next(1);
         service.gameState.bombs.forEach((bomb, bombKey) => {

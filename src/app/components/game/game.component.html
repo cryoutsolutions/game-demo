@@ -1,0 +1,32 @@
+<div class="game">
+  <p>
+    Score:
+    {{gameService.gameState.points}}
+  </p>
+  <p class="right">timer: {{gameService.gameState.started}} bombs left: {{gameService.gameState.bombsLeft}} </p>
+  <button (click)="gameService.run()">Run</button>
+  <button (click)="gameService.pause()">Pause</button>
+  <button (click)="gameService.reset()">Reset</button>
+
+  <div class="bombs">
+    <div class="bomb" *ngFor="let bomb of gameService.gameState.bombs; let i = index"
+         [ngStyle]="{'background-color': bomb.color, left: bomb.x +'px', top: bomb.y+ 'px', width: bomb.timeLeft<5?(5-bomb.timeLeft)*5+50+'px':'50px', height: bomb.timeLeft<5?(5-bomb.timeLeft)*5+50+'px':'50px', opacity: bomb.timeLeft<5?(5-bomb.timeLeft)*0.1+0.5:0.5}"
+         dnd-draggable [dragEnabled]="true" [dragData]="[i,bomb.uid]" (onDragEnd)="onDragEnd(i)"
+    ><div id="bomb" *ngIf="bomb.timeLeft<3"></div><span class="timer">{{bomb.timeLeft}}</span>
+    </div>
+  </div>
+
+  <div class="bins">
+    <div class="bin" *ngFor="let bin of gameService.gameState.bins; let i = index" [ngStyle]="{'background-color': bin.color, opacity: binsActive[i]?1:0.5}"
+         dnd-droppable (onDropSuccess)="onBombToBin($event.dragData[0], i, $event.dragData[1])" (onDragOver)="onDragOver($event.dragData[0], i)"
+    >
+    </div>
+    <p class="timer">Change in: {{gameService.gameState.bins[0]?.timeLeft}}</p>
+  </div>
+  <div class="rules">
+    <p>Match the bombs with the colors.</p>
+    <p>If the bomb color is not in any bin drag it into any bin to diffuse the bomb but you will not get any points.</p>
+  </div>
+  <div class="finished" *ngIf="gameService.gameState.started === -1">Game finished!</div>
+</div>
+
