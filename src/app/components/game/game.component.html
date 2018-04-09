@@ -17,7 +17,7 @@
   </div>
 
   <div class="bins">
-    <div class="bin" *ngFor="let bin of gameService.gameState.bins; let i = index" [ngStyle]="{'background-color': bin.color, opacity: binsActive[i]?1:0.5}"
+    <div class="bin" *ngFor="let bin of gameService.gameState.bins; let i = index" [ngStyle]="{'background-color': bin.color}" [ngClass]="{match:binsActive[i]}"
          dnd-droppable (onDropSuccess)="onBombToBin($event.dragData[0], i, $event.dragData[1])" (onDragOver)="onDragOver($event.dragData[0], i)"
     >
     </div>
